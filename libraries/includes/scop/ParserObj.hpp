@@ -4,24 +4,26 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include "scop/Obj.hpp"
+#include "scop/ParserObj.hpp"
 
 class ParserObj{
 	private:
-	int extractInt(std::string line, int start);
-	float extractFloat(std::string line, int start);
-	int	lineIndex;
+		float	extractFloat(std::string line, unsigned int start, unsigned int *lineIndex);
+		void	parseFaces(std::string line, unsigned int lineIndex);
+		void	createFaces();
+
 
 	public:
 		ParserObj(std::string fileName);
-
-		// std::vector<std::array<float, 3>> v;
-		std::vector<float> v;
-		std::vector<float> vt;
-		std::vector<float> vn;
-		std::vector<std::array<int, 3>> f;
-		int	nbV = 0;
-		int	nbVt = 0;
-		int	nbVn = 0;
-		int	nbF = 0;
+		std::vector<Vertex> vertices;
+		std::vector<glm::vec3> positions;
+		std::vector<glm::vec3> normals;
+		std::vector<glm::vec2> textureCoords;
+		std::vector<glm::vec3> fpositions;
+		std::vector<glm::vec3> fnormals;
+		std::vector<glm::vec3> ftextureCoords;
 };
 #endif
