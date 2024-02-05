@@ -1,8 +1,8 @@
 #include "scop/ParserObj.hpp"
 #include <iostream>
 
-int main() {
-	ParserObj test("resources/cube.obj");
+int main(int argc, char **argv) {
+	ParserObj test(argv[1]);
 	int i = 0;
 	while (i < test.vertices.size()) {
 		std::cout << '[' << test.vertices[i].Position[0]<< ", " << test.vertices[i].Position[1] << ", " << test.vertices[i].Position[2] << ']' << std::endl;

@@ -43,6 +43,7 @@ void Obj::Draw(Shader &shader)
 {
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
+
     // for(unsigned int i = 0; i < textures.size(); i++)
     // {
         glActiveTexture(GL_TEXTURE0); // activate proper texture unit before binding
@@ -61,6 +62,5 @@ void Obj::Draw(Shader &shader)
 
     // draw mesh
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, vertices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 }

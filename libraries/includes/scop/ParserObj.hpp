@@ -12,8 +12,8 @@
 class ParserObj{
 	private:
 		float	extractFloat(std::string line, unsigned int start, unsigned int *lineIndex);
-		void	parseFaces(std::string line, unsigned int lineIndex);
-		void	createFaces();
+		void	parseFaces(std::string line);
+		void	createFaces(std::string *split);
 
 
 	public:
