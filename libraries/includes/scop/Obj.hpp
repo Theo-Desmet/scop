@@ -9,8 +9,8 @@
 
 struct Vertex {
 	glm::vec3	Position;
-	glm::vec3	Normal;
 	glm::vec2	TextureCoords;
+	glm::vec3	Normal;
 };
 
 struct Texture {
@@ -21,7 +21,6 @@ struct Texture {
 class Obj {
 	public:
         std::vector<Vertex>       vertices;
-        // std::vector<unsigned int> id;
         Texture      textures;
 
 		Obj(std::string	objFileName);
@@ -30,8 +29,8 @@ class Obj {
 		void Draw(Shader &shader);
 
 	private:
-	    unsigned int VAO, VBO, EBO;
-        void setupObj();
+	    unsigned int	VAO, VBO, EBO;
+        void			setupObj();
 };
 
 #endif

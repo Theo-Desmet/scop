@@ -20,6 +20,23 @@ void processInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+
+
+void fpsUpdate(GLFWwindow* window) {
+    static float lastFrame = 0.0f;
+    static float prevUpdate = glfwGetTime();
+    float currentFrame = glfwGetTime();
+    float delta = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+    if (currentFrame - prevUpdate >= 1.0) {
+        std::string FPS =
+            "scop - " + std::to_string((int)((1000 / delta) / 1000));
+        FPS += " FPS";
+        glfwSetWindowTitle(window, FPS.c_str());
+        prevUpdate = currentFrame;
+    }
+}
+
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
@@ -31,8 +48,7 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 int main(int argc, char** argv) {
-	if (argc != 2) return (1);
-	ParserObj parsedObj(argv[1]);
+	if (argc != 3) return (1);
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -72,7 +88,7 @@ int main(int argc, char** argv) {
     // build and compile our shader program
     // ------------------------------------
     Shader 		ourShader("shader/test.vs", "shader/test.fs");
-	ParserObj	parserObj(argv[1]);
+	ParserObj	parsedObj(argv[1]);
 	Texture		texture;
 
     unsigned int texture1;
@@ -85,10 +101,11 @@ int main(int argc, char** argv) {
     // // load image, create texture and generate mipmaps
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    unsigned char *data = stbi_load("textures/d1d84392381d28ff7c6b44a10cc5b4e68536163a_2_375x500.png", &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load(argv[2], &width, &height, &nrChannels, 0);
     if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else
@@ -97,7 +114,7 @@ int main(int argc, char** argv) {
     }
     stbi_image_free(data);
 	texture.id = 1;
-	texture.type = "textures/d1d84392381d28ff7c6b44a10cc5b4e68536163a_2_375x500.png";
+	texture.type = argv[2];
 
 
 
@@ -107,7 +124,7 @@ int main(int argc, char** argv) {
     // // -----------
     while (!glfwWindowShouldClose(window))
     {
-
+		fpsUpdate(window);
         // per-frame time logic
         // --------------------
         float currentFrame = static_cast<float>(glfwGetTime());
@@ -140,6 +157,7 @@ int main(int argc, char** argv) {
         obj.Draw(ourShader);
 
         glfwSwapBuffers(window);
+		glfwSwapInterval(0);
         glfwPollEvents();
     }
 

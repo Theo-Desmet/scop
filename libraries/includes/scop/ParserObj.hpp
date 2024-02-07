@@ -11,10 +11,12 @@
 
 class ParserObj{
 	private:
-		float	extractFloat(std::string line, unsigned int start, unsigned int *lineIndex);
+		float min[3] = {10000000000};
+		float max[3] = {-10000000000};
+		
+		float	extractFloat(std::string line, unsigned int start, unsigned int *lineIndex, int i);
 		void	parseFaces(std::string line);
 		void	createFaces(std::string *split);
-
 
 	public:
 		ParserObj(std::string fileName);
@@ -22,8 +24,5 @@ class ParserObj{
 		std::vector<glm::vec3> positions;
 		std::vector<glm::vec3> normals;
 		std::vector<glm::vec2> textureCoords;
-		std::vector<glm::vec3> fpositions;
-		std::vector<glm::vec3> fnormals;
-		std::vector<glm::vec3> ftextureCoords;
 };
 #endif
