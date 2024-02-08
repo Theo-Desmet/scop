@@ -8,6 +8,7 @@
 #include "scop/Shader.hpp"
 #include "scop/Obj.hpp"
 #include "scop/Camera.hpp"
+#include "scop/Maths.hpp"
 
 #include <iostream>
 
@@ -119,7 +120,6 @@ int main(int argc, char** argv) {
 
 
 	Obj			obj(parsedObj.vertices, texture);
-  
     // // render loop
     // // -----------
     while (!glfwWindowShouldClose(window))
@@ -144,23 +144,26 @@ int main(int argc, char** argv) {
         ourShader.use();
 
         // // pass projection matrix to shader (note that in this case it could change every frame)
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		// Maths<float> projection;
+		glm::mat4 projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10000.0f);
         glm::mat4 view = camera.GetViewMatrix();
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
         // render the loaded model
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", model);
+		Maths<float> model;
+        model.translate(0.0f, 0.0f, 0.0f); // translate it down so it's at the center of the scene
+        model.scale(0.0f, 0.0f, 0.0f);	// it's a bit too big for our scene, so scale it down
+        // model.rotateX((float)glfwGetTime());
+        // model.rotateY((float)glfwGetTime());
+        // model.rotateZ((float)glfwGetTime());
+		ourShader.setMat4("model", model.matrix);
         obj.Draw(ourShader);
 
         glfwSwapBuffers(window);
-		glfwSwapInterval(0);
+		glfwSwapInterval(1);
         glfwPollEvents();
     }
-
     glfwTerminate();
     return 0;
 }
